@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulador de Canibalização — Raia Drogasil · BH</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-title">
+      <span class="badge">GEOMARKETING</span>
+      <h1>Simulador de Canibalização de Lojas</h1>
+      <p>Raia Drogasil · Belo Horizonte · Modelo de Huff + IBGE + OpenStreetMap</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-secondary" id="btn-renda">🗺 Camada de Renda</button>
+      <button class="btn-secondary" id="btn-comp">👁 Concorrentes</button>
+      <button class="btn-danger" id="btn-reset">✕ Remover Nova Loja</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="map-wrapper">
+    <div id="map"></div>
+    <div class="map-hint" id="map-hint">
+      <span>📍 Clique no mapa para simular uma nova loja</span>
+    </div>
+    <div class="map-status" id="status">Carregando dados...</div>
+  </div>
+
+  <div class="controls-bar">
+    <div class="ctrl-group">
+      <label>Raio de influência</label>
+      <input type="range" min="200" max="1500" value="600" id="radius-sl"/>
+      <span id="radius-lbl">600m</span>
+    </div>
+    <div class="ctrl-group">
+      <label>Peso de tamanho</label>
+      <input type="range" min="1" max="5" value="3" id="weight-sl"/>
+      <span id="weight-lbl">médio</span>
+    </div>
+    <div class="renda-legend">
+      <span>Renda: baixa</span>
+      <div class="renda-bar" id="renda-bar"></div>
+      <span>alta</span>
+    </div>
+  </div>
+
+  <div class="legend-bar">
+    <div class="leg-item"><span class="leg-dot" style="background:#1D9E75"></span> Droga Raia</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#185fa5"></span> Drogasil</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#D85A30"></span> Nova loja simulada</div>
+    <div class="leg-item"><span class="leg-dot" style="background:#888"></span> Concorrente</div>
+    <div class="leg-item"><span class="leg-sq" style="background:rgba(29,158,117,0.3);border:1px solid #1D9E75"></span> Área de influência</div>
+    <div class="leg-item"><span class="leg-sq" style="background:rgba(255,150,80,0.25);border:1px solid #D85A30"></span> Nova área</div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Lojas RD encontradas</div>
+      <div class="metric-value" id="m-total">—</div>
+      <div class="metric-sub">via OpenStreetMap</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Clientes canibalizados (est.)</div>
+      <div class="metric-value danger" id="m-stolen">—</div>
+      <div class="metric-sub">desviados para nova loja</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Canibalização interna</div>
+      <div class="metric-value warning" id="m-internal">—</div>
+      <div class="metric-sub">% da própria rede RD</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Captação de concorrentes</div>
+      <div class="metric-value success" id="m-external">—</div>
+      <div class="metric-sub">% novos clientes</div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Impacto por loja da rede RD (% clientes desviados)</div>
+      <div id="bar-chart">
+        <div class="chart-empty">Clique no mapa para simular uma nova loja</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Origem dos clientes da nova loja</div>
+      <div class="donut-wrap">
+        <svg id="donut" width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="35" fill="none" stroke="#e5e5e5" stroke-width="14"/>
+          <text x="50" y="54" text-anchor="middle" font-size="12" fill="#aaa">—</text>
+        </svg>
+        <div id="donut-legend" class="donut-legend-empty">
+          Simule uma loja clicando no mapa
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      Dados: <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a> via Overpass API ·
+      Renda por bairro: <a href="https://www.ibge.gov.br" target="_blank">IBGE Censo 2010</a> ·
+      Modelo: <a href="https://en.wikipedia.org/wiki/Huff_model" target="_blank">Huff (1963)</a>
+    </p>
+    <p>Projeto open-source — dados públicos apenas. Estimativas para fins de estudo.</p>
+  </footer>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/data.js"></script>
+<script src="js/huff.js"></script>
+<script src="js/map.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
